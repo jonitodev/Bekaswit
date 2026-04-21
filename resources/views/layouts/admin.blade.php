@@ -1,6 +1,10 @@
 {{-- @author Silva Tria Alfares - 254107023001 --}}
+{{-- // test from alfa --}}
+
+
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,6 +22,7 @@
 
     @stack('styles')
 </head>
+
 <body>
 
     <!-- Sidebar -->
@@ -28,19 +33,24 @@
         </div>
 
         <nav class="sidebar-nav">
-            <a href="{{ route('admin.dashboard') }}" class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+            <a href="{{ route('admin.dashboard') }}"
+                class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
-            <a href="{{ route('admin.users.index') }}" class="sidebar-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.users.index') }}"
+                class="sidebar-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                 <i class="bi bi-people"></i> Penjual
             </a>
-            <a href="{{ route('admin.barang.index') }}" class="sidebar-link {{ request()->routeIs('admin.barang.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.barang.index') }}"
+                class="sidebar-link {{ request()->routeIs('admin.barang.*') ? 'active' : '' }}">
                 <i class="bi bi-box-seam"></i> Barang
             </a>
-            <a href="{{ route('admin.kategori.index') }}" class="sidebar-link {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.kategori.index') }}"
+                class="sidebar-link {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
                 <i class="bi bi-tags"></i> Kategori
             </a>
-            <a href="{{ route('admin.area.index') }}" class="sidebar-link {{ request()->routeIs('admin.area.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.area.index') }}"
+                class="sidebar-link {{ request()->routeIs('admin.area.*') ? 'active' : '' }}">
                 <i class="bi bi-geo-alt"></i> Area
             </a>
 
@@ -71,7 +81,8 @@
         <div class="admin-topbar">
             <h5 class="mb-0">@yield('page-title', 'Dashboard')</h5>
             <div class="d-flex align-items-center gap-2">
-                <span class="d-inline-flex align-items-center justify-content-center rounded-circle text-white" style="width:32px; height:32px; font-size:13px; font-weight:700; background:#3563E9;">
+                <span class="d-inline-flex align-items-center justify-content-center rounded-circle text-white"
+                    style="width:32px; height:32px; font-size:13px; font-weight:700; background:#3563E9;">
                     {{ strtoupper(substr(Auth::user()->nama, 0, 1)) }}
                 </span>
                 <div class="d-flex flex-column lh-sm">
@@ -82,13 +93,13 @@
         </div>
 
         <!-- Flash Messages -->
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show flash-alert" role="alert">
                 <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
-        @if(session('error'))
+        @if (session('error'))
             <div class="alert alert-danger alert-dismissible fade show flash-alert" role="alert">
                 <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -101,36 +112,37 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-    /* @author Silva Tria Alfares - 254107023001 */
-    const toggle = document.getElementById('sidebarToggle');
-    const sidebar = document.getElementById('adminSidebar');
-    const overlay = document.getElementById('sidebarOverlay');
+        /* @author Silva Tria Alfares - 254107023001 */
+        const toggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('adminSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
 
-    if (toggle && sidebar && overlay) {
-        toggle.addEventListener('click', () => {
-            sidebar.classList.toggle('show');
-            overlay.classList.toggle('show');
-        });
-        overlay.addEventListener('click', () => {
-            sidebar.classList.remove('show');
-            overlay.classList.remove('show');
-        });
-    }
-
-    document.querySelectorAll('.flash-alert').forEach(el => {
-        setTimeout(() => {
-            const bsAlert = bootstrap.Alert.getOrCreateInstance(el);
-            bsAlert.close();
-        }, 5000);
-    });
-
-    function confirmDelete(formId, message) {
-        if (confirm(message || 'Apakah Anda yakin ingin menghapus?')) {
-            document.getElementById(formId).submit();
+        if (toggle && sidebar && overlay) {
+            toggle.addEventListener('click', () => {
+                sidebar.classList.toggle('show');
+                overlay.classList.toggle('show');
+            });
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('show');
+                overlay.classList.remove('show');
+            });
         }
-    }
+
+        document.querySelectorAll('.flash-alert').forEach(el => {
+            setTimeout(() => {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(el);
+                bsAlert.close();
+            }, 5000);
+        });
+
+        function confirmDelete(formId, message) {
+            if (confirm(message || 'Apakah Anda yakin ingin menghapus?')) {
+                document.getElementById(formId).submit();
+            }
+        }
     </script>
 
     @stack('scripts')
 </body>
+
 </html>

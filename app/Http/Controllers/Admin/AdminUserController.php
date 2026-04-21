@@ -1,6 +1,7 @@
 <?php
 
 /** @author Silva Tria Alfares - 254107023001 */
+// test from alfa
 
 namespace App\Http\Controllers\Admin;
 
@@ -21,7 +22,7 @@ class AdminUserController extends Controller
             $keyword = $request->input('q');
             $query->where(function ($q) use ($keyword) {
                 $q->where('nama', 'LIKE', "%{$keyword}%")
-                  ->orWhere('email', 'LIKE', "%{$keyword}%");
+                    ->orWhere('email', 'LIKE', "%{$keyword}%");
             });
         }
 

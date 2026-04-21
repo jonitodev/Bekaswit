@@ -1,4 +1,5 @@
 {{-- @author Silva Tria Alfares - 254107023001 --}}
+{{-- test from alfa --}}
 @extends('layouts.admin')
 
 @section('title', 'Manajemen Area')
@@ -36,20 +37,23 @@
                                 <td><span class="badge bg-success">{{ $area->barangs_count }}</span></td>
                                 <td>
                                     <div class="d-flex gap-1">
-                                        <a href="{{ route('admin.area.edit', $area) }}" class="btn btn-sm btn-outline-primary" title="Edit">
+                                        <a href="{{ route('admin.area.edit', $area) }}"
+                                            class="btn btn-sm btn-outline-primary" title="Edit">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        @if($area->users_count == 0 && $area->barangs_count == 0)
-                                            <form method="POST" action="{{ route('admin.area.destroy', $area) }}" id="del-area-{{ $area->id }}">
+                                        @if ($area->users_count == 0 && $area->barangs_count == 0)
+                                            <form method="POST" action="{{ route('admin.area.destroy', $area) }}"
+                                                id="del-area-{{ $area->id }}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="btn btn-sm btn-outline-danger" title="Hapus"
-                                                        onclick="confirmDelete('del-area-{{ $area->id }}', 'Hapus area \'{{ $area->nama_kecamatan }}\'?')">
+                                                    onclick="confirmDelete('del-area-{{ $area->id }}', 'Hapus area \'{{ $area->nama_kecamatan }}\'?')">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
                                         @else
-                                            <button class="btn btn-sm btn-outline-secondary" disabled title="Tidak bisa dihapus, masih ada data terkait">
+                                            <button class="btn btn-sm btn-outline-secondary" disabled
+                                                title="Tidak bisa dihapus, masih ada data terkait">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         @endif
@@ -57,7 +61,9 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="6" class="text-center text-muted py-4">Belum ada area.</td></tr>
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">Belum ada area.</td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
