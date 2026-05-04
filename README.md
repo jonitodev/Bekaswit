@@ -1,58 +1,104 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Bekaswit - Bekas Jadi Duit
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Platform marketplace lokal berbasis web untuk jual beli barang bekas antar penghuni kos mahasiswa di Malang Kota.
 
-## About Laravel
+## Deskripsi
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Bekaswit adalah platform yang memudahkan mahasiswa penghuni kos di Malang untuk menjual dan membeli barang bekas kebutuhan kos. Dilengkapi fitur filter berdasarkan area kecamatan, kategori barang, dan integrasi langsung ke WhatsApp untuk komunikasi antara penjual dan pembeli. Transaksi dilakukan secara COD (Cash on Delivery).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Backend:** Laravel 11 (PHP 8.2+)
+- **Database:** MySQL 8
+- **Frontend:** Blade Templates + Bootstrap 5
+- **Transaksi:** COD Only (tanpa payment gateway)
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Cara Instalasi
 
 ```bash
-composer require laravel/boost --dev
+# 1. Clone repository
+git clone https://github.com/your-repo/bekaswit.git
+cd bekaswit
 
-php artisan boost:install
+# 2. Install dependencies
+composer install
+
+# 3. Copy environment file
+cp .env.example .env
+
+# 4. Generate application key
+php artisan key:generate
+
+# 5. Buat database MySQL
+# Buat database dengan nama 'bekaswit' di MySQL
+
+# 6. Sesuaikan konfigurasi database di .env
+# DB_DATABASE=bekaswit
+# DB_USERNAME=root
+# DB_PASSWORD=
+
+# 7. Jalankan migration
+php artisan migrate
+
+# 8. Jalankan seeder
+php artisan db:seed
+
+# 9. Buat symbolic link untuk storage
+php artisan storage:link
+
+# 10. Jalankan server
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Akses aplikasi di: `http://localhost:8000`
 
-## Contributing
+## Akun Dummy untuk Testing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| Nama            | Email              | Password   | Area           |
+|-----------------|--------------------|------------|----------------|
+| Andi Pratama    | andi@example.com   | password   | Lowokwaru      |
+| Budi Santoso    | budi@example.com   | password   | Klojen         |
+| Citra Dewi      | citra@example.com  | password   | Blimbing       |
+| Dani Setiawan   | dani@example.com   | password   | Sukun          |
+| Eka Putri       | eka@example.com    | password   | Kedungkandang  |
 
-## Code of Conduct
+## Fitur Utama
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Posting barang bekas dengan foto (maks. 4 foto)
+- Filter berdasarkan area kecamatan dan kategori barang
+- Pencarian barang dengan keyword
+- Sorting berdasarkan harga dan tanggal posting
+- Status barang: Tersedia, Booking, Terjual
+- Integrasi WhatsApp untuk menghubungi penjual
+- Manajemen listing barang pribadi
+- Profil pengguna dengan area kecamatan
 
-## Security Vulnerabilities
+## Area Cakupan
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Khusus kecamatan di Malang Kota:
+1. Lowokwaru
+2. Klojen
+3. Blimbing
+4. Sukun
+5. Kedungkandang
 
-## License
+## Kategori Barang
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. Alat Masak
+2. Furniture
+3. Elektronik
+4. Perlengkapan Kamar
+
+## Anggota Kelompok
+
+| No | Nama                              | NIM            | Role                    |
+|----|-----------------------------------|----------------|-------------------------|
+| 1  | Silva Tria Alfares                | 254107023001   | Backend & Infrastructure|
+| 2  | Izza Dhafira Fanani               | 244107020106   | Authentication Dev      |
+| 3  | Gilang Bayu Irwana                | 244107020194   | Frontend Dev            |
+| 4  | Joni Yoga Kusuma                  | 254107023003   | Core Feature Dev        |
+| 5  | Mochamad Yunan Helmy Affandi      | 244107020101   | Search & Integration    |
+
+## Institusi
+
+Politeknik Negeri Malang - 2026

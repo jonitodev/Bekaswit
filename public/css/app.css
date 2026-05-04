@@ -1,0 +1,478 @@
+/* @author Gilang Bayu Irwana - 244107020194 */
+
+/* ========================================
+   BEKASWIT — Modern Minimalist UI
+   Font: Inter (Google Fonts)
+   ======================================== */
+
+:root {
+    --primary: #3563E9;
+    --primary-hover: #2a4fc7;
+    --primary-light: #EBF0FF;
+    --accent: #16A34A;
+    --accent-hover: #15803d;
+    --surface: #ffffff;
+    --background: #F6F8FB;
+    --text: #1E293B;
+    --text-secondary: #64748B;
+    --text-muted: #94A3B8;
+    --border: #E2E8F0;
+    --border-light: #F1F5F9;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.1);
+    --radius: 14px;
+    --radius-sm: 10px;
+    --radius-xs: 8px;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    font-size: 14.5px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+}
+
+a { color: var(--primary); }
+a:hover { color: var(--primary-hover); }
+
+/* ── Bootstrap Overrides ────────────────── */
+
+.bg-primary { background-color: var(--primary) !important; }
+.text-primary { color: var(--primary) !important; }
+
+.btn {
+    font-weight: 600;
+    border-radius: var(--radius-xs);
+    padding: 0.5rem 1.25rem;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    letter-spacing: 0.01em;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    box-shadow: 0 4px 12px rgba(53, 99, 233, 0.3);
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--border);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-outline-secondary {
+    color: var(--text-secondary);
+    border-color: var(--border);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--border-light);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+.card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.form-control, .form-select {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-xs);
+    padding: 0.6rem 0.9rem;
+    font-size: 14px;
+    color: var(--text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.12);
+}
+
+.form-control::placeholder { color: var(--text-muted); }
+
+.form-label {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 0.35rem;
+    letter-spacing: 0.02em;
+}
+
+.badge {
+    font-weight: 600;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+    padding: 0.3em 0.7em;
+    border-radius: 6px;
+}
+
+.alert {
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.dropdown-menu {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    padding: 0.5rem;
+}
+
+.dropdown-item {
+    border-radius: 6px;
+    font-size: 14px;
+    padding: 0.5rem 0.75rem;
+}
+
+.table { font-size: 14px; }
+.table thead { font-weight: 600; color: var(--text-secondary); }
+
+/* ── Navbar ──────────────────────────────── */
+
+.navbar-bekaswit {
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0.6rem 0;
+}
+
+.navbar-bekaswit .navbar-brand {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.03em;
+}
+
+.navbar-bekaswit .navbar-brand:hover { color: var(--primary-hover); }
+
+.navbar-bekaswit .nav-link {
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 14px;
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--radius-xs);
+    transition: all 0.15s ease;
+}
+
+.navbar-bekaswit .nav-link:hover,
+.navbar-bekaswit .nav-link.active {
+    color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+.navbar-bekaswit .navbar-toggler {
+    border: 1.5px solid var(--border);
+    padding: 0.3rem 0.55rem;
+}
+
+.navbar-bekaswit .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%2364748B' stroke-linecap='round' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.btn-nav-daftar {
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    font-size: 13.5px;
+    padding: 0.4rem 1.1rem;
+}
+
+.btn-nav-daftar:hover {
+    background-color: var(--primary-hover);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(53, 99, 233, 0.25);
+}
+
+/* ── Hero Section ────────────────────────── */
+
+.hero-section {
+    background: linear-gradient(160deg, #3563E9 0%, #1d4ed8 50%, #1e3a8a 100%);
+    color: #fff;
+    padding: 3.5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.hero-section h1 {
+    font-weight: 800;
+    font-size: 2.4rem;
+    letter-spacing: -0.03em;
+    color: #fff;
+}
+
+.hero-section .hero-sub {
+    font-size: 1.1rem;
+    opacity: 0.85;
+    font-weight: 400;
+}
+
+.hero-search .form-control {
+    border: none;
+    padding: 0.85rem 1.2rem;
+    font-size: 15px;
+    border-radius: 12px 0 0 12px;
+    background: rgba(255,255,255,0.95);
+    color: var(--text);
+}
+
+.hero-search .form-control:focus {
+    box-shadow: none;
+    background: #fff;
+}
+
+.hero-search .btn {
+    border-radius: 0 12px 12px 0;
+    padding: 0.85rem 1.5rem;
+    font-weight: 700;
+    background: #fff;
+    color: var(--primary);
+    border: none;
+}
+
+.hero-search .btn:hover {
+    background: var(--primary-light);
+}
+
+/* ── Filter Bar ──────────────────────────── */
+
+.filter-bar {
+    background-color: var(--surface);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+}
+
+/* ── Barang Card ─────────────────────────── */
+
+.barang-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    background: var(--surface);
+}
+
+.barang-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: transparent;
+}
+
+.barang-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+    background-color: var(--border-light);
+}
+
+.barang-card .card-body { padding: 1rem 1.1rem; }
+
+.barang-card .card-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.7em;
+    letter-spacing: -0.01em;
+}
+
+.barang-card .harga {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* ── Badge Styles ────────────────────────── */
+
+.badge-tersedia { background-color: #DCFCE7; color: #15803D; }
+.badge-booking  { background-color: #FEF9C3; color: #A16207; }
+.badge-terjual  { background-color: #F1F5F9; color: #64748B; }
+.badge-kategori { background-color: var(--primary-light); color: var(--primary); }
+.badge-area     { background-color: #F1F5F9; color: #475569; }
+
+/* ── WhatsApp Button ─────────────────────── */
+
+.btn-whatsapp {
+    background-color: #25D366;
+    border-color: #25D366;
+    color: #fff;
+    font-weight: 700;
+    border-radius: var(--radius-xs);
+}
+
+.btn-whatsapp:hover {
+    background-color: #1fb855;
+    border-color: #1fb855;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+}
+
+/* ── Photo Preview ───────────────────────── */
+
+.photo-preview-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.photo-preview-container img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: var(--radius-xs);
+    border: 2px solid var(--border);
+}
+
+/* ── Listing Table ───────────────────────── */
+
+.listing-table { border-radius: var(--radius-sm); overflow: hidden; }
+.listing-table thead { background-color: var(--border-light); }
+.listing-table tbody tr { transition: background 0.15s ease; }
+.listing-table tbody tr:hover { background-color: var(--primary-light); }
+
+.listing-table .barang-thumb {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: var(--radius-xs);
+}
+
+/* ── Placeholder ─────────────────────────── */
+
+.img-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--border-light);
+    color: var(--text-muted);
+    font-size: 3rem;
+    height: 200px;
+}
+
+.img-placeholder-sm {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--border-light);
+    color: var(--text-muted);
+    border-radius: var(--radius-xs);
+    font-size: 1.4rem;
+}
+
+/* ── Detail Page ─────────────────────────── */
+
+.detail-carousel .carousel-inner img {
+    height: 420px;
+    object-fit: contain;
+    background-color: var(--border-light);
+}
+
+.detail-harga {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.02em;
+}
+
+/* ── Footer ──────────────────────────────── */
+
+.footer-bekaswit {
+    background-color: var(--surface);
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 1rem 0;
+    font-size: 13px;
+}
+
+/* ── Seller Dashboard ───────────────────── */
+
+.seller-stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.seller-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.seller-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+}
+
+.seller-stat-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+
+.seller-stat-label {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+    letter-spacing: 0.02em;
+}
+
+/* ── Responsive ──────────────────────────── */
+
+@media (max-width: 768px) {
+    .hero-section h1 { font-size: 1.65rem; }
+    .hero-section .hero-sub { font-size: 0.95rem; }
+    .barang-card .card-img-top { height: 170px; }
+    .detail-carousel .carousel-inner img { height: 260px; }
+    .detail-harga { font-size: 1.4rem; }
+}
