@@ -1,5 +1,4 @@
 {{-- @author Silva Tria Alfares - 254107023001 --}}
-{{-- // test from alfa --}}
 @extends('layouts.admin')
 
 @section('title', 'Detail Penjual')
@@ -21,7 +20,7 @@
                     <h5 class="fw-bold mb-1">{{ $user->nama }}</h5>
                     <p class="text-muted mb-2">{{ $user->email }}</p>
 
-                    @if ($user->is_blocked)
+                    @if($user->is_blocked)
                         <span class="badge bg-danger fs-6 mb-3">Diblokir</span>
                     @else
                         <span class="badge bg-success fs-6 mb-3">Aktif</span>
@@ -30,36 +29,30 @@
                     <hr>
 
                     <div class="text-start">
-                        <p class="mb-2"><strong><i class="bi bi-whatsapp text-success"></i> WhatsApp:</strong>
-                            {{ $user->no_wa }}</p>
-                        <p class="mb-2"><strong><i class="bi bi-geo-alt"></i> Area:</strong>
-                            {{ $user->area->nama_kecamatan ?? '-' }}, Malang</p>
-                        <p class="mb-2"><strong><i class="bi bi-calendar3"></i> Terdaftar:</strong>
-                            {{ $user->created_at->translatedFormat('d F Y') }}</p>
-                        <p class="mb-0"><strong><i class="bi bi-box-seam"></i> Total Barang:</strong>
-                            {{ $user->barangs->count() }}</p>
+                        <p class="mb-2"><strong><i class="bi bi-whatsapp text-success"></i> WhatsApp:</strong> {{ $user->no_wa }}</p>
+                        <p class="mb-2"><strong><i class="bi bi-geo-alt"></i> Area:</strong> {{ $user->area->nama_kecamatan ?? '-' }}, Malang</p>
+                        <p class="mb-2"><strong><i class="bi bi-calendar3"></i> Terdaftar:</strong> {{ $user->created_at->translatedFormat('d F Y') }}</p>
+                        <p class="mb-0"><strong><i class="bi bi-box-seam"></i> Total Barang:</strong> {{ $user->barangs->count() }}</p>
                     </div>
                 </div>
             </div>
 
             <!-- Block Info -->
-            @if ($user->is_blocked)
+            @if($user->is_blocked)
                 <div class="alert alert-danger mt-3">
                     <h6 class="fw-bold"><i class="bi bi-lock"></i> Penjual Diblokir</h6>
                     <p class="mb-1"><strong>Alasan:</strong> {{ $user->blocked_reason }}</p>
-                    <p class="mb-0 small text-muted">Diblokir pada: {{ $user->blocked_at->translatedFormat('d F Y H:i') }}
-                    </p>
+                    <p class="mb-0 small text-muted">Diblokir pada: {{ $user->blocked_at->translatedFormat('d F Y H:i') }}</p>
                 </div>
             @endif
 
             <!-- Action Buttons -->
             <div class="d-grid gap-2 mt-3">
-                @if ($user->is_blocked)
+                @if($user->is_blocked)
                     <form method="POST" action="{{ route('admin.users.unblock', $user) }}">
                         @csrf
                         @method('PATCH')
-                        <button type="submit" class="btn btn-success w-100"
-                            onclick="return confirm('Buka blokir penjual ini?')">
+                        <button type="submit" class="btn btn-success w-100" onclick="return confirm('Buka blokir penjual ini?')">
                             <i class="bi bi-unlock"></i> Buka Blokir
                         </button>
                     </form>
@@ -73,6 +66,7 @@
                     @csrf
                     @method('DELETE')
                     <button type="button" class="btn btn-outline-danger w-100"
+                            onclick="confirmDelete('delete-user-form', 'Hapus penjual {{ $user->nama }} dan semua datanya?')">
                         onclick="confirmDelete('delete-user-form', 'Hapus penjual {{ $user->nama }} dan semua datanya?')">
                         <i class="bi bi-trash"></i> Hapus Penjual
                     </button>
@@ -105,6 +99,8 @@
                                     <tr>
                                         <td>
                                             @php $foto = $barang->fotoBarangs->where('is_primary', true)->first() ?? $barang->fotoBarangs->first(); @endphp
+                                            @if($foto)
+                                                <img src="{{ asset('storage/' . $foto->file_path) }}" class="thumb" alt="">
                                             @if ($foto)
                                                 <img src="{{ asset('storage/' . $foto->file_path) }}" class="thumb"
                                                     alt="">
@@ -114,17 +110,25 @@
                                         </td>
                                         <td class="fw-semibold">{{ Str::limit($barang->nama_barang, 30) }}</td>
                                         <td>{{ $barang->harga_formatted }}</td>
+                                        <td><span class="badge bg-primary">{{ $barang->kategori->nama_kategori }}</span></td>
+                                        <td>
                                         <td><span class="badge bg-primary">{{ $barang->kategori->nama_kategori }}</span>
                                         </td>
-                                        <td>
                                             <span
                                                 class="badge badge-status bg-{{ $barang->status === 'tersedia' ? 'success' : ($barang->status === 'booking' ? 'warning' : 'secondary') }}">
                                                 {{ ucfirst($barang->status) }}
                                             </span>
-                                        </td>
                                         <td class="text-muted small">{{ $barang->created_at->format('d/m/Y') }}</td>
                                         <td>
                                             <div class="d-flex gap-1">
+                                                <a href="{{ route('admin.barang.show', $barang) }}" class="btn btn-sm btn-outline-primary" title="Detail">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <form method="POST" action="{{ route('admin.barang.destroy', $barang) }}" id="del-brg-{{ $barang->id }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" title="Hapus"
+                                                            onclick="confirmDelete('del-brg-{{ $barang->id }}', 'Hapus barang ini?')">
                                                 <a href="{{ route('admin.barang.show', $barang) }}"
                                                     class="btn btn-sm btn-outline-primary" title="Detail">
                                                     <i class="bi bi-eye"></i>
@@ -143,6 +147,7 @@
                                         </td>
                                     </tr>
                                 @empty
+                                    <tr><td colspan="7" class="text-center text-muted py-4">Penjual belum memiliki barang.</td></tr>
                                     <tr>
                                         <td colspan="7" class="text-center text-muted py-4">Penjual belum memiliki
                                             barang.</td>
@@ -157,6 +162,7 @@
     </div>
 
     <!-- Block Modal -->
+    @if(!$user->is_blocked)
     @if (!$user->is_blocked)
         <div class="modal fade" id="blockModal" tabindex="-1">
             <div class="modal-dialog">
@@ -171,6 +177,8 @@
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="blocked_reason" class="form-label">Alasan Pemblokiran</label>
+                                <textarea name="blocked_reason" id="blocked_reason" rows="3"
+                                          class="form-control" placeholder="Tuliskan alasan pemblokiran..." required></textarea>
                                 <textarea name="blocked_reason" id="blocked_reason" rows="3" class="form-control"
                                     placeholder="Tuliskan alasan pemblokiran..." required></textarea>
                             </div>

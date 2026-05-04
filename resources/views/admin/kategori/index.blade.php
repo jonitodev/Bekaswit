@@ -1,5 +1,4 @@
 {{-- @author Silva Tria Alfares - 254107023001 --}}
-{{-- // test from alfa --}}
 @extends('layouts.admin')
 
 @section('title', 'Manajemen Kategori')
@@ -35,23 +34,20 @@
                                 <td><span class="badge bg-primary">{{ $kategori->barangs_count }}</span></td>
                                 <td>
                                     <div class="d-flex gap-1">
-                                        <a href="{{ route('admin.kategori.edit', $kategori) }}"
-                                            class="btn btn-sm btn-outline-primary" title="Edit">
+                                        <a href="{{ route('admin.kategori.edit', $kategori) }}" class="btn btn-sm btn-outline-primary" title="Edit">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        @if ($kategori->barangs_count == 0)
-                                            <form method="POST" action="{{ route('admin.kategori.destroy', $kategori) }}"
-                                                id="del-kat-{{ $kategori->id }}">
+                                        @if($kategori->barangs_count == 0)
+                                            <form method="POST" action="{{ route('admin.kategori.destroy', $kategori) }}" id="del-kat-{{ $kategori->id }}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="btn btn-sm btn-outline-danger" title="Hapus"
-                                                    onclick="confirmDelete('del-kat-{{ $kategori->id }}', 'Hapus kategori \'{{ $kategori->nama_kategori }}\'?')">
+                                                        onclick="confirmDelete('del-kat-{{ $kategori->id }}', 'Hapus kategori \'{{ $kategori->nama_kategori }}\'?')">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
                                         @else
-                                            <button class="btn btn-sm btn-outline-secondary" disabled
-                                                title="Tidak bisa dihapus, masih ada barang">
+                                            <button class="btn btn-sm btn-outline-secondary" disabled title="Tidak bisa dihapus, masih ada barang">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         @endif
@@ -59,9 +55,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr>
-                                <td colspan="5" class="text-center text-muted py-4">Belum ada kategori.</td>
-                            </tr>
+                            <tr><td colspan="5" class="text-center text-muted py-4">Belum ada kategori.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
