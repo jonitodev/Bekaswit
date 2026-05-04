@@ -67,6 +67,7 @@
                     @method('DELETE')
                     <button type="button" class="btn btn-outline-danger w-100"
                             onclick="confirmDelete('delete-user-form', 'Hapus penjual {{ $user->nama }} dan semua datanya?')">
+                        onclick="confirmDelete('delete-user-form', 'Hapus penjual {{ $user->nama }} dan semua datanya?')">
                         <i class="bi bi-trash"></i> Hapus Penjual
                     </button>
                 </form>
@@ -100,6 +101,9 @@
                                             @php $foto = $barang->fotoBarangs->where('is_primary', true)->first() ?? $barang->fotoBarangs->first(); @endphp
                                             @if($foto)
                                                 <img src="{{ asset('storage/' . $foto->file_path) }}" class="thumb" alt="">
+                                            @if ($foto)
+                                                <img src="{{ asset('storage/' . $foto->file_path) }}" class="thumb"
+                                                    alt="">
                                             @else
                                                 <div class="thumb-placeholder"><i class="bi bi-image"></i></div>
                                             @endif
@@ -108,10 +112,12 @@
                                         <td>{{ $barang->harga_formatted }}</td>
                                         <td><span class="badge bg-primary">{{ $barang->kategori->nama_kategori }}</span></td>
                                         <td>
-                                            <span class="badge badge-status bg-{{ $barang->status === 'tersedia' ? 'success' : ($barang->status === 'booking' ? 'warning' : 'secondary') }}">
+                                        <td><span class="badge bg-primary">{{ $barang->kategori->nama_kategori }}</span>
+                                        </td>
+                                            <span
+                                                class="badge badge-status bg-{{ $barang->status === 'tersedia' ? 'success' : ($barang->status === 'booking' ? 'warning' : 'secondary') }}">
                                                 {{ ucfirst($barang->status) }}
                                             </span>
-                                        </td>
                                         <td class="text-muted small">{{ $barang->created_at->format('d/m/Y') }}</td>
                                         <td>
                                             <div class="d-flex gap-1">
@@ -123,6 +129,17 @@
                                                     @method('DELETE')
                                                     <button type="button" class="btn btn-sm btn-outline-danger" title="Hapus"
                                                             onclick="confirmDelete('del-brg-{{ $barang->id }}', 'Hapus barang ini?')">
+                                                <a href="{{ route('admin.barang.show', $barang) }}"
+                                                    class="btn btn-sm btn-outline-primary" title="Detail">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <form method="POST" action="{{ route('admin.barang.destroy', $barang) }}"
+                                                    id="del-brg-{{ $barang->id }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-sm btn-outline-danger"
+                                                        title="Hapus"
+                                                        onclick="confirmDelete('del-brg-{{ $barang->id }}', 'Hapus barang ini?')">
                                                         <i class="bi bi-trash"></i>
                                                     </button>
                                                 </form>
@@ -131,6 +148,10 @@
                                     </tr>
                                 @empty
                                     <tr><td colspan="7" class="text-center text-muted py-4">Penjual belum memiliki barang.</td></tr>
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted py-4">Penjual belum memiliki
+                                            barang.</td>
+                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -142,6 +163,7 @@
 
     <!-- Block Modal -->
     @if(!$user->is_blocked)
+    @if (!$user->is_blocked)
         <div class="modal fade" id="blockModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -157,6 +179,8 @@
                                 <label for="blocked_reason" class="form-label">Alasan Pemblokiran</label>
                                 <textarea name="blocked_reason" id="blocked_reason" rows="3"
                                           class="form-control" placeholder="Tuliskan alasan pemblokiran..." required></textarea>
+                                <textarea name="blocked_reason" id="blocked_reason" rows="3" class="form-control"
+                                    placeholder="Tuliskan alasan pemblokiran..." required></textarea>
                             </div>
                             <div class="alert alert-warning small mb-0">
                                 <i class="bi bi-exclamation-triangle"></i>

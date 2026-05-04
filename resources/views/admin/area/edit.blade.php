@@ -19,10 +19,6 @@
                                    class="form-control @error('nama_kecamatan') is-invalid @enderror"
                                    value="{{ old('nama_kecamatan', $area->nama_kecamatan) }}" required autofocus>
                             @error('nama_kecamatan')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
                         <div class="mb-3">
                             <label for="kota" class="form-label">Kota</label>
                             <input type="text" name="kota" id="kota"

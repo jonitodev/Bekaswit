@@ -103,22 +103,28 @@
                                 <td class="text-muted small">{{ $barang->created_at->format('d/m/Y') }}</td>
                                 <td>
                                     <div class="d-flex gap-1">
+<<<<<<< HEAD
                                         <a href="{{ route('admin.barang.show', $barang) }}" class="btn btn-sm btn-outline-primary" title="Detail">
                                             <i class="bi bi-eye"></i>
                                         </a>
                                         <form method="POST" action="{{ route('admin.barang.destroy', $barang) }}" id="del-b-{{ $barang->id }}">
-                                            @csrf
                                             @method('DELETE')
                                             <button type="button" class="btn btn-sm btn-outline-danger" title="Hapus"
                                                     onclick="confirmDelete('del-b-{{ $barang->id }}', 'Hapus barang \'{{ $barang->nama_barang }}\'?')">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+=======
+                                        <a href="{{ route('admin.barang.show', $barang) }}"
+                                            class="btn btn-sm btn-outline-primary" title="Detail">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
                             </tr>
                         @empty
+<<<<<<< HEAD
                             <tr><td colspan="10" class="text-center text-muted py-4">Tidak ada barang ditemukan.</td></tr>
+=======
+                            <tr>
+                                <td colspan="10" class="text-center text-muted py-4">Tidak ada barang ditemukan.</td>
+                            </tr>
+>>>>>>> 580b3871e22f562c606801a6347f07e8e263baef
                         @endforelse
                     </tbody>
                 </table>
@@ -126,9 +132,16 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     @if($barangs->hasPages())
         <div class="d-flex justify-content-between align-items-center mt-3">
             <small class="text-muted">Menampilkan {{ $barangs->firstItem() }} - {{ $barangs->lastItem() }} dari {{ $barangs->total() }} barang</small>
+=======
+    @if ($barangs->hasPages())
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">Menampilkan {{ $barangs->firstItem() }} - {{ $barangs->lastItem() }} dari
+                {{ $barangs->total() }} barang</small>
+>>>>>>> 580b3871e22f562c606801a6347f07e8e263baef
             {{ $barangs->links() }}
         </div>
     @endif
