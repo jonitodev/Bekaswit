@@ -119,6 +119,19 @@
                             </tr>
                         @empty
                             <tr><td colspan="10" class="text-center text-muted py-4">Tidak ada barang ditemukan.</td></tr>
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-sm btn-outline-danger" title="Hapus"
+                                                    onclick="confirmDelete('del-b-{{ $barang->id }}', 'Hapus barang \'{{ $barang->nama_barang }}\'?')">
+                                        <a href="{{ route('admin.barang.show', $barang) }}"
+                                            class="btn btn-sm btn-outline-primary" title="Detail">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                            </tr>
+                        @empty
+                            <tr><td colspan="10" class="text-center text-muted py-4">Tidak ada barang ditemukan.</td></tr>
+                            <tr>
+                                <td colspan="10" class="text-center text-muted py-4">Tidak ada barang ditemukan.</td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -129,6 +142,13 @@
     @if($barangs->hasPages())
         <div class="d-flex justify-content-between align-items-center mt-3">
             <small class="text-muted">Menampilkan {{ $barangs->firstItem() }} - {{ $barangs->lastItem() }} dari {{ $barangs->total() }} barang</small>
+    @if($barangs->hasPages())
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">Menampilkan {{ $barangs->firstItem() }} - {{ $barangs->lastItem() }} dari {{ $barangs->total() }} barang</small>
+    @if ($barangs->hasPages())
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">Menampilkan {{ $barangs->firstItem() }} - {{ $barangs->lastItem() }} dari
+                {{ $barangs->total() }} barang</small>
             {{ $barangs->links() }}
         </div>
     @endif

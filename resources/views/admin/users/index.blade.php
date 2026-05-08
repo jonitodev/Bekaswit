@@ -29,6 +29,10 @@
                             <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary w-100">Reset</a>
                         </div>
                     @endif
+                    </div>
+                    @if(request()->hasAny(['q', 'status']))
+                    @if (request()->hasAny(['q', 'status']))
+                        <div class="col-md-2">
                 </div>
             </form>
         </div>
@@ -62,6 +66,8 @@
                                 <td><span class="badge bg-primary">{{ $user->barangs_count }}</span></td>
                                 <td>
                                     @if($user->is_blocked)
+                                    @if($user->is_blocked)
+                                    @if ($user->is_blocked)
                                         <span class="badge badge-status bg-danger">Diblokir</span>
                                     @else
                                         <span class="badge badge-status bg-success">Aktif</span>
@@ -79,12 +85,26 @@
                                                 @method('PATCH')
                                                 <button type="submit" class="btn btn-sm btn-outline-success" title="Buka Blokir"
                                                         onclick="return confirm('Buka blokir penjual {{ $user->nama }}?')">
+                                        <a href="{{ route('admin.users.show', $user) }}"
+                                            class="btn btn-sm btn-outline-primary" title="Detail">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+                                        @if ($user->is_blocked)
+                                            <form method="POST" action="{{ route('admin.users.unblock', $user) }}">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-sm btn-outline-success"
+                                                    title="Buka Blokir"
+                                                    onclick="return confirm('Buka blokir penjual {{ $user->nama }}?')">
                                                     <i class="bi bi-unlock"></i>
                                                 </button>
                                             </form>
                                         @else
                                             <button type="button" class="btn btn-sm btn-outline-danger" title="Blokir"
                                                     data-bs-toggle="modal" data-bs-target="#blockModal{{ $user->id }}">
+                                                    data-bs-toggle="modal" data-bs-target="#blockModal{{ $user->id }}">
+                                                data-bs-toggle="modal" data-bs-target="#blockModal{{ $user->id }}">
                                                 <i class="bi bi-lock"></i>
                                             </button>
                                         @endif
@@ -94,6 +114,12 @@
                                             @method('DELETE')
                                             <button type="button" class="btn btn-sm btn-outline-danger" title="Hapus"
                                                     onclick="confirmDelete('delete-user-{{ $user->id }}', 'Hapus penjual {{ $user->nama }} beserta semua datanya?')">
+                                        <form method="POST" action="{{ route('admin.users.destroy', $user) }}"
+                                            id="delete-user-{{ $user->id }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-sm btn-outline-danger" title="Hapus"
+                                                onclick="confirmDelete('delete-user-{{ $user->id }}', 'Hapus penjual {{ $user->nama }} beserta semua datanya?')">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
@@ -101,6 +127,8 @@
 
                                     <!-- Block Modal -->
                                     @if(!$user->is_blocked)
+                                    @if(!$user->is_blocked)
+                                    @if (!$user->is_blocked)
                                         <div class="modal fade" id="blockModal{{ $user->id }}" tabindex="-1">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -116,6 +144,17 @@
                                                                 <label for="blocked_reason_{{ $user->id }}" class="form-label">Alasan Pemblokiran</label>
                                                                 <textarea name="blocked_reason" id="blocked_reason_{{ $user->id }}" rows="3"
                                                                           class="form-control" placeholder="Tuliskan alasan..." required></textarea>
+                                                            <h6 class="modal-title fw-bold">Blokir Penjual:
+                                                                {{ $user->nama }}</h6>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <label for="blocked_reason_{{ $user->id }}"
+                                                                    class="form-label">Alasan Pemblokiran</label>
+                                                                <textarea name="blocked_reason" id="blocked_reason_{{ $user->id }}" rows="3" class="form-control"
+                                                                    placeholder="Tuliskan alasan..." required></textarea>
                                                             </div>
                                                             <div class="alert alert-warning small mb-0">
                                                                 <i class="bi bi-exclamation-triangle"></i>
@@ -125,6 +164,12 @@
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                                                             <button type="submit" class="btn btn-danger">Blokir Penjual</button>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                            <button type="submit" class="btn btn-danger">Blokir Penjual</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Batal</button>
+                                                            <button type="submit" class="btn btn-danger">Blokir
+                                                                Penjual</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -135,6 +180,10 @@
                             </tr>
                         @empty
                             <tr><td colspan="8" class="text-center text-muted py-4">Tidak ada penjual ditemukan.</td></tr>
+                            <tr><td colspan="8" class="text-center text-muted py-4">Tidak ada penjual ditemukan.</td></tr>
+                            <tr>
+                                <td colspan="8" class="text-center text-muted py-4">Tidak ada penjual ditemukan.</td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -145,6 +194,13 @@
     @if($users->hasPages())
         <div class="d-flex justify-content-between align-items-center mt-3">
             <small class="text-muted">Menampilkan {{ $users->firstItem() }} - {{ $users->lastItem() }} dari {{ $users->total() }} penjual</small>
+    @if($users->hasPages())
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">Menampilkan {{ $users->firstItem() }} - {{ $users->lastItem() }} dari {{ $users->total() }} penjual</small>
+    @if ($users->hasPages())
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">Menampilkan {{ $users->firstItem() }} - {{ $users->lastItem() }} dari
+                {{ $users->total() }} penjual</small>
             {{ $users->links() }}
         </div>
     @endif

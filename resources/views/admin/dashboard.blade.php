@@ -61,6 +61,9 @@
                                     <tr>
                                         <td>
                                             <a href="{{ route('admin.barang.show', $barang) }}" class="text-decoration-none">
+                                            <a href="{{ route('admin.barang.show', $barang) }}" class="text-decoration-none">
+                                            <a href="{{ route('admin.barang.show', $barang) }}"
+                                                class="text-decoration-none">
                                                 {{ Str::limit($barang->nama_barang, 30) }}
                                             </a>
                                         </td>
@@ -68,6 +71,9 @@
                                         <td class="fw-semibold">{{ $barang->harga_formatted }}</td>
                                         <td>
                                             <span class="badge badge-status bg-{{ $barang->status === 'tersedia' ? 'success' : ($barang->status === 'booking' ? 'warning' : 'secondary') }}">
+                                            <span class="badge badge-status bg-{{ $barang->status === 'tersedia' ? 'success' : ($barang->status === 'booking' ? 'warning' : 'secondary') }}">
+                                            <span
+                                                class="badge badge-status bg-{{ $barang->status === 'tersedia' ? 'success' : ($barang->status === 'booking' ? 'warning' : 'secondary') }}">
                                                 {{ ucfirst($barang->status) }}
                                             </span>
                                         </td>
@@ -75,6 +81,10 @@
                                     </tr>
                                 @empty
                                     <tr><td colspan="5" class="text-center text-muted py-3">Belum ada data.</td></tr>
+                                    <tr><td colspan="5" class="text-center text-muted py-3">Belum ada data.</td></tr>
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-3">Belum ada data.</td>
+                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -111,6 +121,10 @@
                                     </tr>
                                 @empty
                                     <tr><td colspan="3" class="text-center text-muted py-3">Belum ada data.</td></tr>
+                                    <tr><td colspan="3" class="text-center text-muted py-3">Belum ada data.</td></tr>
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted py-3">Belum ada data.</td>
+                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -128,12 +142,17 @@
                 <div class="card-body stat-progress">
                     @php $maxKat = $barangPerKategori->max('barangs_count') ?: 1; @endphp
                     @foreach($barangPerKategori as $kat)
+                    @foreach($barangPerKategori as $kat)
+                    @foreach ($barangPerKategori as $kat)
                         <div class="d-flex justify-content-between align-items-center mb-1">
                             <span class="small fw-semibold">{{ $kat->nama_kategori }}</span>
                             <span class="badge bg-primary">{{ $kat->barangs_count }}</span>
                         </div>
                         <div class="progress mb-3">
                             <div class="progress-bar bg-primary" style="width: {{ ($kat->barangs_count / $maxKat) * 100 }}%"></div>
+                            <div class="progress-bar bg-primary" style="width: {{ ($kat->barangs_count / $maxKat) * 100 }}%"></div>
+                            <div class="progress-bar bg-primary"
+                                style="width: {{ ($kat->barangs_count / $maxKat) * 100 }}%"></div>
                         </div>
                     @endforeach
                 </div>
@@ -146,12 +165,17 @@
                 <div class="card-body stat-progress">
                     @php $maxArea = $barangPerArea->max('barangs_count') ?: 1; @endphp
                     @foreach($barangPerArea as $ar)
+                    @foreach($barangPerArea as $ar)
+                    @foreach ($barangPerArea as $ar)
                         <div class="d-flex justify-content-between align-items-center mb-1">
                             <span class="small fw-semibold">{{ $ar->nama_kecamatan }}</span>
                             <span class="badge bg-success">{{ $ar->barangs_count }}</span>
                         </div>
                         <div class="progress mb-3">
                             <div class="progress-bar bg-success" style="width: {{ ($ar->barangs_count / $maxArea) * 100 }}%"></div>
+                            <div class="progress-bar bg-success" style="width: {{ ($ar->barangs_count / $maxArea) * 100 }}%"></div>
+                            <div class="progress-bar bg-success"
+                                style="width: {{ ($ar->barangs_count / $maxArea) * 100 }}%"></div>
                         </div>
                     @endforeach
                 </div>
