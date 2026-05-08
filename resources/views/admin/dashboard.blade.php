@@ -60,37 +60,31 @@
                                 @forelse($latestBarangs as $barang)
                                     <tr>
                                         <td>
-<<<<<<< HEAD
                                             <a href="{{ route('admin.barang.show', $barang) }}" class="text-decoration-none">
-=======
+                                            <a href="{{ route('admin.barang.show', $barang) }}" class="text-decoration-none">
                                             <a href="{{ route('admin.barang.show', $barang) }}"
                                                 class="text-decoration-none">
->>>>>>> 580b3871e22f562c606801a6347f07e8e263baef
                                                 {{ Str::limit($barang->nama_barang, 30) }}
                                             </a>
                                         </td>
                                         <td class="text-muted small">{{ $barang->user->nama }}</td>
                                         <td class="fw-semibold">{{ $barang->harga_formatted }}</td>
                                         <td>
-<<<<<<< HEAD
                                             <span class="badge badge-status bg-{{ $barang->status === 'tersedia' ? 'success' : ($barang->status === 'booking' ? 'warning' : 'secondary') }}">
-=======
+                                            <span class="badge badge-status bg-{{ $barang->status === 'tersedia' ? 'success' : ($barang->status === 'booking' ? 'warning' : 'secondary') }}">
                                             <span
                                                 class="badge badge-status bg-{{ $barang->status === 'tersedia' ? 'success' : ($barang->status === 'booking' ? 'warning' : 'secondary') }}">
->>>>>>> 580b3871e22f562c606801a6347f07e8e263baef
                                                 {{ ucfirst($barang->status) }}
                                             </span>
                                         </td>
                                         <td class="text-muted small">{{ $barang->created_at->format('d/m/Y') }}</td>
                                     </tr>
                                 @empty
-<<<<<<< HEAD
                                     <tr><td colspan="5" class="text-center text-muted py-3">Belum ada data.</td></tr>
-=======
+                                    <tr><td colspan="5" class="text-center text-muted py-3">Belum ada data.</td></tr>
                                     <tr>
                                         <td colspan="5" class="text-center text-muted py-3">Belum ada data.</td>
                                     </tr>
->>>>>>> 580b3871e22f562c606801a6347f07e8e263baef
                                 @endforelse
                             </tbody>
                         </table>
@@ -126,13 +120,11 @@
                                         <td><span class="badge bg-secondary">{{ $user->barangs_count }}</span></td>
                                     </tr>
                                 @empty
-<<<<<<< HEAD
                                     <tr><td colspan="3" class="text-center text-muted py-3">Belum ada data.</td></tr>
-=======
+                                    <tr><td colspan="3" class="text-center text-muted py-3">Belum ada data.</td></tr>
                                     <tr>
                                         <td colspan="3" class="text-center text-muted py-3">Belum ada data.</td>
                                     </tr>
->>>>>>> 580b3871e22f562c606801a6347f07e8e263baef
                                 @endforelse
                             </tbody>
                         </table>
@@ -149,22 +141,18 @@
                 <div class="card-header"><i class="bi bi-tags"></i> Barang per Kategori</div>
                 <div class="card-body stat-progress">
                     @php $maxKat = $barangPerKategori->max('barangs_count') ?: 1; @endphp
-<<<<<<< HEAD
                     @foreach($barangPerKategori as $kat)
-=======
+                    @foreach($barangPerKategori as $kat)
                     @foreach ($barangPerKategori as $kat)
->>>>>>> 580b3871e22f562c606801a6347f07e8e263baef
                         <div class="d-flex justify-content-between align-items-center mb-1">
                             <span class="small fw-semibold">{{ $kat->nama_kategori }}</span>
                             <span class="badge bg-primary">{{ $kat->barangs_count }}</span>
                         </div>
                         <div class="progress mb-3">
-<<<<<<< HEAD
                             <div class="progress-bar bg-primary" style="width: {{ ($kat->barangs_count / $maxKat) * 100 }}%"></div>
-=======
+                            <div class="progress-bar bg-primary" style="width: {{ ($kat->barangs_count / $maxKat) * 100 }}%"></div>
                             <div class="progress-bar bg-primary"
                                 style="width: {{ ($kat->barangs_count / $maxKat) * 100 }}%"></div>
->>>>>>> 580b3871e22f562c606801a6347f07e8e263baef
                         </div>
                     @endforeach
                 </div>
@@ -176,22 +164,18 @@
                 <div class="card-header"><i class="bi bi-geo-alt"></i> Barang per Area</div>
                 <div class="card-body stat-progress">
                     @php $maxArea = $barangPerArea->max('barangs_count') ?: 1; @endphp
-<<<<<<< HEAD
                     @foreach($barangPerArea as $ar)
-=======
+                    @foreach($barangPerArea as $ar)
                     @foreach ($barangPerArea as $ar)
->>>>>>> 580b3871e22f562c606801a6347f07e8e263baef
                         <div class="d-flex justify-content-between align-items-center mb-1">
                             <span class="small fw-semibold">{{ $ar->nama_kecamatan }}</span>
                             <span class="badge bg-success">{{ $ar->barangs_count }}</span>
                         </div>
                         <div class="progress mb-3">
-<<<<<<< HEAD
                             <div class="progress-bar bg-success" style="width: {{ ($ar->barangs_count / $maxArea) * 100 }}%"></div>
-=======
+                            <div class="progress-bar bg-success" style="width: {{ ($ar->barangs_count / $maxArea) * 100 }}%"></div>
                             <div class="progress-bar bg-success"
                                 style="width: {{ ($ar->barangs_count / $maxArea) * 100 }}%"></div>
->>>>>>> 580b3871e22f562c606801a6347f07e8e263baef
                         </div>
                     @endforeach
                 </div>
