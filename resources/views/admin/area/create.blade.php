@@ -1,5 +1,4 @@
 {{-- @author Silva Tria Alfares - 254107023001 --}}
-{{-- test from alfa --}}
 @extends('layouts.admin')
 
 @section('title', 'Tambah Area')
@@ -16,9 +15,8 @@
                         <div class="mb-3">
                             <label for="nama_kecamatan" class="form-label">Nama Kecamatan</label>
                             <input type="text" name="nama_kecamatan" id="nama_kecamatan"
-                                class="form-control @error('nama_kecamatan') is-invalid @enderror"
-                                value="{{ old('nama_kecamatan') }}" placeholder="Masukkan nama kecamatan" required
-                                autofocus>
+                                   class="form-control @error('nama_kecamatan') is-invalid @enderror"
+                                   value="{{ old('nama_kecamatan') }}" placeholder="Masukkan nama kecamatan" required autofocus>
                             @error('nama_kecamatan')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -27,8 +25,8 @@
                         <div class="mb-3">
                             <label for="kota" class="form-label">Kota</label>
                             <input type="text" name="kota" id="kota"
-                                class="form-control @error('kota') is-invalid @enderror" value="{{ old('kota', 'Malang') }}"
-                                required>
+                                   class="form-control @error('kota') is-invalid @enderror"
+                                   value="{{ old('kota', 'Malang') }}" required>
                             @error('kota')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
