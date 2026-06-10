@@ -168,6 +168,13 @@
     @if($barangs->hasPages())
         <div class="d-flex justify-content-between align-items-center mt-3">
             <small class="text-muted">Menampilkan {{ $barangs->firstItem() }} - {{ $barangs->lastItem() }} dari {{ $barangs->total() }} barang</small>
+    @if($barangs->hasPages())
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">Menampilkan {{ $barangs->firstItem() }} - {{ $barangs->lastItem() }} dari {{ $barangs->total() }} barang</small>
+    @if ($barangs->hasPages())
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">Menampilkan {{ $barangs->firstItem() }} - {{ $barangs->lastItem() }} dari
+                {{ $barangs->total() }} barang</small>
             {{ $barangs->links() }}
         </div>
     @endif

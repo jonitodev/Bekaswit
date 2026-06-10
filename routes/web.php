@@ -1,6 +1,7 @@
 <?php
 
 /** @author Silva Tria Alfares - 254107023001 */
+// test from alfa
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
