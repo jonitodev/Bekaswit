@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminBarangController;
 use App\Http\Controllers\Admin\AdminKategoriController;
 use App\Http\Controllers\Admin\AdminAreaController;
+use App\Http\Controllers\Admin\AdminBannerController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -56,8 +57,11 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
 
     Route::get('/barang', [AdminBarangController::class, 'index'])->name('barang.index');
     Route::get('/barang/{barang}', [AdminBarangController::class, 'show'])->name('barang.show');
+    Route::patch('/barang/{barang}/approve', [AdminBarangController::class, 'approve'])->name('barang.approve');
+    Route::patch('/barang/{barang}/reject', [AdminBarangController::class, 'reject'])->name('barang.reject');
     Route::delete('/barang/{barang}', [AdminBarangController::class, 'destroy'])->name('barang.destroy');
 
     Route::resource('kategori', AdminKategoriController::class)->except(['show']);
     Route::resource('area', AdminAreaController::class)->except(['show']);
+    Route::resource('banner', AdminBannerController::class)->except(['show']);
 });

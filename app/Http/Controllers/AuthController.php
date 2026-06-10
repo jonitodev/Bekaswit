@@ -50,7 +50,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password yang Anda masukkan salah.',
+            'email' => 'Email atau kata sandi yang Anda masukkan salah.',
         ])->onlyInput('email');
     }
 
@@ -69,18 +69,22 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'no_wa'    => ['required', 'string', 'regex:/^08[0-9]{8,12}$/'],
             'area_id'  => ['required', 'exists:areas,id'],
+            // Anti-scammer: seller must accept terms & conditions before registration
+            'terms'    => ['required', 'accepted'],
         ], [
             'nama.required'     => 'Nama wajib diisi.',
             'email.required'    => 'Email wajib diisi.',
             'email.email'       => 'Format email tidak valid.',
             'email.unique'      => 'Email sudah terdaftar.',
-            'password.required' => 'Password wajib diisi.',
-            'password.min'      => 'Password minimal 8 karakter.',
-            'password.confirmed'=> 'Konfirmasi password tidak cocok.',
+            'password.required' => 'Kata sandi wajib diisi.',
+            'password.min'      => 'Kata sandi minimal 8 karakter.',
+            'password.confirmed'=> 'Konfirmasi kata sandi tidak cocok.',
             'no_wa.required'    => 'Nomor WhatsApp wajib diisi.',
             'no_wa.regex'       => 'Format nomor WhatsApp tidak valid (contoh: 081234567890).',
             'area_id.required'  => 'Pilih area kecamatan.',
             'area_id.exists'    => 'Area kecamatan tidak valid.',
+            'terms.required'    => 'Anda harus menyetujui Syarat & Ketentuan untuk menjadi penjual.',
+            'terms.accepted'    => 'Anda harus menyetujui Syarat & Ketentuan untuk menjadi penjual.',
         ]);
 
         $user = User::create([

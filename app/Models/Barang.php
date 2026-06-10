@@ -17,11 +17,20 @@ class Barang extends Model
         'harga',
         'kategori_id',
         'status',
+        'kondisi',
         'area_id',
+        'latitude',
+        'longitude',
+        'approval_status',
+        'rejected_reason',
+        'reviewed_at',
     ];
 
     protected $casts = [
-        'harga' => 'decimal:2',
+        'harga'       => 'decimal:2',
+        'latitude'    => 'float',
+        'longitude'   => 'float',
+        'reviewed_at' => 'datetime',
     ];
 
     public function user(): BelongsTo
@@ -52,6 +61,38 @@ class Barang extends Model
     public function getHargaFormattedAttribute(): string
     {
         return 'Rp ' . number_format($this->harga, 0, ',', '.');
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return [
+            'tersedia' => 'Tersedia',
+            'booking'  => 'Dipesan',
+            'terjual'  => 'Terjual',
+        ][$this->status] ?? ucfirst($this->status);
+    }
+
+    public function getKondisiLabelAttribute(): string
+    {
+        return [
+            'like-new' => 'Seperti Baru',
+            'good'     => 'Baik',
+            'fair'     => 'Cukup',
+        ][$this->kondisi] ?? ucfirst((string) $this->kondisi);
+    }
+
+    public function getApprovalLabelAttribute(): string
+    {
+        return [
+            'pending'  => 'Menunggu Persetujuan',
+            'approved' => 'Disetujui',
+            'rejected' => 'Ditolak',
+        ][$this->approval_status] ?? ucfirst((string) $this->approval_status);
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('approval_status', 'approved');
     }
 
     public function scopeTersedia($query)

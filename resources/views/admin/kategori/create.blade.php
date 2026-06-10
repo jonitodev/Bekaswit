@@ -20,7 +20,7 @@
                             @error('nama_kategori')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <small class="text-muted">Slug akan otomatis di-generate.</small>
+                            <small class="text-muted">Slug akan dibuat otomatis.</small>
                         </div>
 
                         <div class="d-flex gap-2">

@@ -13,7 +13,7 @@ class KategoriSeeder extends Seeder
     {
         $kategoris = [
             ['nama_kategori' => 'Alat Masak', 'slug' => 'alat-masak'],
-            ['nama_kategori' => 'Furniture', 'slug' => 'furniture'],
+            ['nama_kategori' => 'Perabotan', 'slug' => 'perabotan'],
             ['nama_kategori' => 'Elektronik', 'slug' => 'elektronik'],
             ['nama_kategori' => 'Perlengkapan Kamar', 'slug' => 'perlengkapan-kamar'],
         ];

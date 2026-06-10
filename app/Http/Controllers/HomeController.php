@@ -5,6 +5,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
+use App\Models\Banner;
 use App\Models\Barang;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class HomeController extends Controller
     {
         $query = Barang::with(['user', 'kategori', 'area', 'fotoBarangs' => function ($q) {
             $q->where('is_primary', true);
-        }])->tersedia();
+        }])->approved()->tersedia();
 
         if ($request->filled('kategori')) {
             $query->byKategori($request->input('kategori'));
@@ -28,7 +29,8 @@ class HomeController extends Controller
         $barangs   = $query->latest()->paginate(12)->appends($request->query());
         $kategoris = Kategori::orderBy('nama_kategori')->get();
         $areas     = Area::orderBy('nama_kecamatan')->get();
+        $banners   = Banner::active()->ordered()->get();
 
-        return view('home', compact('barangs', 'kategoris', 'areas'));
+        return view('home', compact('barangs', 'kategoris', 'areas', 'banners'));
     }
 }

@@ -1,7 +1,7 @@
 {{-- @author Silva Tria Alfares - 254107023001 --}}
 @extends('layouts.app')
 
-@section('title', 'Dashboard Penjual - Bekaswit')
+@section('title', 'Dasbor Penjual - Bekaswit')
 
 @section('content')
 <div class="container py-4">
@@ -9,7 +9,7 @@
     {{-- Header --}}
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-2">
         <div>
-            <h4 class="fw-bold mb-1">Dashboard Penjual</h4>
+            <h4 class="fw-bold mb-1">Dasbor Penjual</h4>
             <p class="mb-0 small" style="color:var(--text-secondary);">
                 Halo, <strong>{{ Auth::user()->nama }}</strong> — bergabung sejak {{ $memberSince->translatedFormat('d F Y') }}
             </p>
@@ -45,7 +45,7 @@
                     <i class="bi bi-clock-history"></i>
                 </div>
                 <div class="seller-stat-value">{{ $stats['barang_booking'] }}</div>
-                <div class="seller-stat-label">Booking</div>
+                <div class="seller-stat-label">Dipesan</div>
             </div>
         </div>
         <div class="col-6 col-lg-3">
@@ -103,7 +103,7 @@
                                                 </a>
                                             </td>
                                             <td class="fw-semibold" style="color:var(--primary);">{{ $barang->harga_formatted }}</td>
-                                            <td><span class="badge badge-{{ $barang->status }}">{{ ucfirst($barang->status) }}</span></td>
+                                            <td><span class="badge badge-{{ $barang->status }}">{{ $barang->status_label }}</span></td>
                                             <td class="small" style="color:var(--text-muted);">{{ $barang->created_at->format('d/m/Y') }}</td>
                                         </tr>
                                     @endforeach
@@ -163,7 +163,7 @@
                         <i class="bi bi-plus-circle me-1"></i> Posting Barang Baru
                     </a>
                     <a href="{{ route('listing.index') }}" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-box-seam me-1"></i> Kelola Listing
+                        <i class="bi bi-box-seam me-1"></i> Kelola Daftar Barang
                     </a>
                     <a href="{{ route('profil.edit') }}" class="btn btn-outline-secondary btn-sm">
                         <i class="bi bi-person me-1"></i> Edit Profil
