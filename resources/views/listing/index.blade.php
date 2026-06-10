@@ -1,12 +1,12 @@
 {{-- @author Gilang Bayu Irwana - 244107020194 --}}
 @extends('layouts.app')
 
-@section('title', 'Listing Saya - Bekaswit')
+@section('title', 'Daftar Barang Saya - Bekaswit')
 
 @section('content')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="fw-bold mb-0">Listing Saya</h4>
+        <h4 class="fw-bold mb-0">Daftar Barang Saya</h4>
         <a href="{{ route('barang.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-circle"></i> Jual Barang Baru
         </a>
@@ -22,6 +22,7 @@
                             <th>Nama Barang</th>
                             <th>Harga</th>
                             <th>Kategori</th>
+                            <th>Persetujuan</th>
                             <th>Status</th>
                             <th>Tanggal</th>
                             <th>Aksi</th>
@@ -49,12 +50,23 @@
                                 <td class="fw-semibold" style="color:var(--primary);">{{ $barang->harga_formatted }}</td>
                                 <td><span class="badge badge-kategori">{{ $barang->kategori->nama_kategori }}</span></td>
                                 <td>
+                                    @php
+                                        $approvalClass = ['pending' => 'bg-warning text-dark', 'approved' => 'bg-success', 'rejected' => 'bg-danger'][$barang->approval_status] ?? 'bg-secondary';
+                                    @endphp
+                                    <span class="badge {{ $approvalClass }}">{{ $barang->approval_label }}</span>
+                                    @if($barang->approval_status === 'rejected' && $barang->rejected_reason)
+                                        <div class="small text-danger mt-1" style="max-width:200px;">
+                                            <i class="bi bi-info-circle"></i> {{ $barang->rejected_reason }}
+                                        </div>
+                                    @endif
+                                </td>
+                                <td>
                                     <form method="POST" action="{{ route('barang.updateStatus', $barang) }}" class="d-inline">
                                         @csrf
                                         @method('PATCH')
                                         <select name="status" onchange="this.form.submit()" class="form-select form-select-sm" style="width:auto; font-size:13px;">
                                             <option value="tersedia" {{ $barang->status === 'tersedia' ? 'selected' : '' }}>Tersedia</option>
-                                            <option value="booking" {{ $barang->status === 'booking' ? 'selected' : '' }}>Booking</option>
+                                            <option value="booking" {{ $barang->status === 'booking' ? 'selected' : '' }}>Dipesan</option>
                                             <option value="terjual" {{ $barang->status === 'terjual' ? 'selected' : '' }}>Terjual</option>
                                         </select>
                                     </form>

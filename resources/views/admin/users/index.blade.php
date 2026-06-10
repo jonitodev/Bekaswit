@@ -26,7 +26,7 @@
                     </div>
                     @if(request()->hasAny(['q', 'status']))
                         <div class="col-md-2">
-                            <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary w-100">Reset</a>
+                            <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary w-100">Atur Ulang</a>
                         </div>
                     @endif
                     </div>
@@ -124,58 +124,6 @@
                                             </button>
                                         </form>
                                     </div>
-
-                                    <!-- Block Modal -->
-                                    @if(!$user->is_blocked)
-                                    @if(!$user->is_blocked)
-                                    @if (!$user->is_blocked)
-                                        <div class="modal fade" id="blockModal{{ $user->id }}" tabindex="-1">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <form method="POST" action="{{ route('admin.users.block', $user) }}">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <div class="modal-header">
-                                                            <h6 class="modal-title fw-bold">Blokir Penjual: {{ $user->nama }}</h6>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="mb-3">
-                                                                <label for="blocked_reason_{{ $user->id }}" class="form-label">Alasan Pemblokiran</label>
-                                                                <textarea name="blocked_reason" id="blocked_reason_{{ $user->id }}" rows="3"
-                                                                          class="form-control" placeholder="Tuliskan alasan..." required></textarea>
-                                                            <h6 class="modal-title fw-bold">Blokir Penjual:
-                                                                {{ $user->nama }}</h6>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="mb-3">
-                                                                <label for="blocked_reason_{{ $user->id }}"
-                                                                    class="form-label">Alasan Pemblokiran</label>
-                                                                <textarea name="blocked_reason" id="blocked_reason_{{ $user->id }}" rows="3" class="form-control"
-                                                                    placeholder="Tuliskan alasan..." required></textarea>
-                                                            </div>
-                                                            <div class="alert alert-warning small mb-0">
-                                                                <i class="bi bi-exclamation-triangle"></i>
-                                                                Semua barang aktif penjual ini akan dinonaktifkan.
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                            <button type="submit" class="btn btn-danger">Blokir Penjual</button>
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                            <button type="submit" class="btn btn-danger">Blokir Penjual</button>
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Batal</button>
-                                                            <button type="submit" class="btn btn-danger">Blokir
-                                                                Penjual</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
                                 </td>
                             </tr>
                         @empty
@@ -204,4 +152,39 @@
             {{ $users->links() }}
         </div>
     @endif
+
+    {{-- Block Modals (placed outside the table to avoid backdrop overlap) --}}
+    @foreach($users as $user)
+        @if(!$user->is_blocked)
+            <div class="modal fade" id="blockModal{{ $user->id }}" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="POST" action="{{ route('admin.users.block', $user) }}">
+                            @csrf
+                            @method('PATCH')
+                            <div class="modal-header">
+                                <h6 class="modal-title fw-bold">Blokir Penjual: {{ $user->nama }}</h6>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="blocked_reason_{{ $user->id }}" class="form-label">Alasan Pemblokiran</label>
+                                    <textarea name="blocked_reason" id="blocked_reason_{{ $user->id }}" rows="3"
+                                              class="form-control" placeholder="Tuliskan alasan..." required></textarea>
+                                </div>
+                                <div class="alert alert-warning small mb-0">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                    Semua barang aktif penjual ini akan dinonaktifkan.
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-danger">Blokir Penjual</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endforeach
 @endsection

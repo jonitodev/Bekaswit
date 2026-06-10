@@ -1,39 +1,62 @@
 {{-- @author Mochamad Yunan Helmy Affandi - 244107020101 --}}
 @extends('layouts.app')
 
-@section('title', 'Hasil Pencarian - Bekaswit')
+@section('title', 'Hasil Pencarian — Bekaswit')
 
 @section('content')
-<div class="container py-4">
-    <h4 class="fw-bold mb-1">
-        Hasil Pencarian
-    </h4>
-    @if(request('q'))
-        <p class="mb-3" style="color:var(--text-secondary);">Menampilkan hasil untuk "<strong>{{ request('q') }}</strong>"</p>
-    @else
-        <p class="mb-3" style="color:var(--text-secondary);">Jelajahi semua barang yang tersedia</p>
-    @endif
+<section>
+    <div class="container">
+        <div class="shop-wrap">
 
-    @include('components.filter-bar', ['kategoris' => $kategoris, 'areas' => $areas])
+            {{-- Sidebar filter --}}
+            @include('components.filter-bar', ['kategoris' => $kategoris, 'areas' => $areas])
 
-    @if($barangs->count() > 0)
-        <p class="small mb-3" style="color:var(--text-muted);">Menampilkan {{ $barangs->firstItem() }}&ndash;{{ $barangs->lastItem() }} dari {{ $barangs->total() }} barang</p>
+            {{-- Hasil pencarian --}}
+            <div>
+                <header class="section-head">
+                    <div>
+                        <h2>
+                            @if(request('q'))
+                                Hasil untuk <em style="font-style:italic; color:var(--accent);">"{{ request('q') }}"</em>
+                            @else
+                                Jelajahi <em style="font-style:italic; color:var(--accent);">Semua</em>
+                            @endif
+                        </h2>
+                        <p>
+                            @if($barangs->count() > 0)
+                                Menampilkan {{ $barangs->firstItem() }}–{{ $barangs->lastItem() }} dari {{ $barangs->total() }} barang.
+                            @else
+                                Tidak ada barang yang sesuai filter.
+                            @endif
+                        </p>
+                    </div>
+                    @if($barangs->count() > 0)
+                        <span class="results-count">{{ $barangs->total() }} barang</span>
+                    @endif
+                </header>
 
-        <div class="row">
-            @foreach($barangs as $barang)
-                @include('components.barang-card', ['barang' => $barang])
-            @endforeach
+                @if($barangs->count() > 0)
+                    <div class="product-grid">
+                        @foreach($barangs as $i => $barang)
+                            @include('components.barang-card', ['barang' => $barang, 'index' => $i])
+                        @endforeach
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-5">
+                        {{ $barangs->links() }}
+                    </div>
+                @else
+                    <div class="empty-state">
+                        <i class="bi bi-search"></i>
+                        <p class="mt-3">Tidak ada barang yang ditemukan untuk pencarian Anda.</p>
+                        <a href="{{ route('home') }}" class="btn btn-primary mt-2">
+                            <i class="bi bi-arrow-left"></i> Kembali ke Beranda
+                        </a>
+                    </div>
+                @endif
+            </div>
+
         </div>
-
-        <div class="d-flex justify-content-center mt-2">
-            {{ $barangs->links() }}
-        </div>
-    @else
-        <div class="text-center py-5">
-            <i class="bi bi-search" style="font-size:4rem; color:var(--text-muted);"></i>
-            <p class="mt-3" style="color:var(--text-secondary); font-size:1.05rem;">Tidak ada barang yang ditemukan.</p>
-            <a href="{{ route('home') }}" class="btn btn-outline-primary">Kembali ke Beranda</a>
-        </div>
-    @endif
-</div>
+    </div>
+</section>
 @endsection

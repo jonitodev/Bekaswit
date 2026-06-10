@@ -4,6 +4,10 @@
 @section('title', 'Detail Barang')
 @section('page-title', 'Detail Barang')
 
+@push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+@endpush
+
 @section('content')
     <a href="{{ route('admin.barang.index') }}" class="btn btn-outline-secondary btn-sm mb-3">
         <i class="bi bi-arrow-left"></i> Kembali
@@ -54,11 +58,22 @@
 
                     <div class="d-flex flex-wrap gap-2 mb-3">
                         <span class="badge badge-status bg-{{ $barang->status === 'tersedia' ? 'success' : ($barang->status === 'booking' ? 'warning' : 'secondary') }} fs-6">
-                            {{ ucfirst($barang->status) }}
+                            {{ $barang->status_label }}
                         </span>
+                        @php
+                            $approvalClass = ['pending' => 'bg-warning text-dark', 'approved' => 'bg-success', 'rejected' => 'bg-danger'][$barang->approval_status] ?? 'bg-secondary';
+                        @endphp
+                        <span class="badge {{ $approvalClass }} fs-6">{{ $barang->approval_label }}</span>
+                        <span class="badge bg-info text-dark fs-6">{{ $barang->kondisi_label }}</span>
                         <span class="badge bg-primary fs-6">{{ $barang->kategori->nama_kategori }}</span>
                         <span class="badge bg-secondary fs-6">{{ $barang->area->nama_kecamatan }}</span>
                     </div>
+
+                    @if($barang->approval_status === 'rejected' && $barang->rejected_reason)
+                        <div class="alert alert-danger small">
+                            <strong>Alasan penolakan:</strong> {{ $barang->rejected_reason }}
+                        </div>
+                    @endif
 
                     @if($barang->deskripsi)
                         <h6 class="fw-semibold">Deskripsi</h6>
@@ -96,17 +111,90 @@
                             </tr>
                         </table>
                     </div>
+
+                    @if($barang->latitude && $barang->longitude)
+                        <h6 class="fw-semibold mt-3"><i class="bi bi-geo-alt"></i> Lokasi</h6>
+                        <div id="map"
+                             data-lat="{{ $barang->latitude }}"
+                             data-lng="{{ $barang->longitude }}"
+                             style="height:240px; border-radius:8px; border:1px solid var(--border);"></div>
+                    @endif
                 </div>
             </div>
 
-            <form method="POST" action="{{ route('admin.barang.destroy', $barang) }}" id="delete-barang-form" class="mt-3">
-                @csrf
-                @method('DELETE')
-                <button type="button" class="btn btn-danger w-100"
-                        onclick="confirmDelete('delete-barang-form', 'Hapus barang \'{{ $barang->nama_barang }}\'?')">
-                    <i class="bi bi-trash"></i> Hapus Barang
-                </button>
-            </form>
+            <div class="d-grid gap-2 mt-3">
+                @if($barang->approval_status !== 'approved')
+                    <form method="POST" action="{{ route('admin.barang.approve', $barang) }}">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" class="btn btn-success w-100"
+                                onclick="return confirm('Setujui barang ini?')">
+                            <i class="bi bi-check-circle"></i> Setujui Barang
+                        </button>
+                    </form>
+                @endif
+
+                @if($barang->approval_status !== 'rejected')
+                    <button type="button" class="btn btn-warning w-100" data-bs-toggle="modal" data-bs-target="#rejectBarangModal">
+                        <i class="bi bi-x-circle"></i> Tolak Barang
+                    </button>
+                @endif
+
+                <form method="POST" action="{{ route('admin.barang.destroy', $barang) }}" id="delete-barang-form">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" class="btn btn-outline-danger w-100"
+                            onclick="confirmDelete('delete-barang-form', 'Hapus barang \'{{ $barang->nama_barang }}\'?')">
+                        <i class="bi bi-trash"></i> Hapus Barang
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
+
+    @if($barang->approval_status !== 'rejected')
+        <div class="modal fade" id="rejectBarangModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="POST" action="{{ route('admin.barang.reject', $barang) }}">
+                        @csrf
+                        @method('PATCH')
+                        <div class="modal-header">
+                            <h6 class="modal-title fw-bold">Tolak Barang: {{ $barang->nama_barang }}</h6>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="rejected_reason" class="form-label">Alasan Penolakan</label>
+                            <textarea name="rejected_reason" id="rejected_reason" rows="3"
+                                      class="form-control" placeholder="Tuliskan alasan penolakan..." required></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-warning">Tolak Barang</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function () {
+    var mapEl = document.getElementById('map');
+    if (mapEl && typeof L !== 'undefined') {
+        var lat = parseFloat(mapEl.getAttribute('data-lat'));
+        var lng = parseFloat(mapEl.getAttribute('data-lng'));
+        var map = L.map('map', { scrollWheelZoom: false }).setView([lat, lng], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+        L.marker([lat, lng]).addTo(map);
+        setTimeout(function () { map.invalidateSize(); }, 200);
+    }
+})();
+</script>
+@endpush

@@ -17,6 +17,10 @@ class BarangController extends Controller
 {
     public function show(Barang $barang)
     {
+        if ($barang->approval_status !== 'approved' && $barang->user_id !== Auth::id()) {
+            abort(404);
+        }
+
         $barang->load(['user', 'kategori', 'area', 'fotoBarangs']);
 
         return view('barang.show', compact('barang'));
@@ -27,12 +31,16 @@ class BarangController extends Controller
     {
         $query = Barang::with(['user', 'kategori', 'area', 'fotoBarangs' => function ($q) {
             $q->where('is_primary', true);
-        }]);
+        }])->approved();
 
         // Default: only 'tersedia'
         $status = $request->input('status', 'tersedia');
         if (in_array($status, ['tersedia', 'booking', 'terjual'])) {
             $query->where('status', $status);
+        }
+
+        if ($request->filled('kondisi') && in_array($request->input('kondisi'), ['like-new', 'good', 'fair'])) {
+            $query->where('kondisi', $request->input('kondisi'));
         }
 
         if ($request->filled('q')) {
@@ -80,16 +88,22 @@ class BarangController extends Controller
             'deskripsi'   => ['nullable', 'string', 'max:1000'],
             'harga'       => ['required', 'numeric', 'min:1000', 'max:99999999'],
             'kategori_id' => ['required', 'exists:kategoris,id'],
-            'fotos'       => ['required', 'array', 'min:1', 'max:4'],
+            'kondisi'     => ['required', 'in:like-new,good,fair'],
+            'latitude'    => ['nullable', 'numeric', 'between:-90,90'],
+            'longitude'   => ['nullable', 'numeric', 'between:-180,180'],
+            'fotos'       => ['required', 'array', 'min:1', 'max:5'],
             'fotos.*'     => ['image', 'mimes:jpeg,jpg,png,webp', 'max:2048'],
         ], [
             'nama_barang.required' => 'Nama barang wajib diisi.',
             'harga.required'       => 'Harga wajib diisi.',
             'harga.min'            => 'Harga minimal Rp 1.000.',
             'kategori_id.required' => 'Pilih kategori barang.',
-            'fotos.required'       => 'Upload minimal 1 foto barang.',
-            'fotos.max'            => 'Maksimal 4 foto barang.',
-            'fotos.*.image'        => 'File harus berupa gambar.',
+            'kondisi.required'     => 'Pilih kondisi barang.',
+            'kondisi.in'           => 'Kondisi barang tidak valid.',
+            'fotos.required'       => 'Unggah minimal 1 foto barang.',
+            'fotos.min'            => 'Unggah minimal 1 foto barang.',
+            'fotos.max'            => 'Maksimal 5 foto barang.',
+            'fotos.*.image'        => 'Berkas harus berupa gambar.',
             'fotos.*.mimes'        => 'Format gambar: JPEG, JPG, PNG, atau WebP.',
             'fotos.*.max'          => 'Ukuran foto maksimal 2MB.',
         ]);
@@ -98,13 +112,17 @@ class BarangController extends Controller
 
         try {
             $barang = Barang::create([
-                'user_id'     => Auth::id(),
-                'nama_barang' => $validated['nama_barang'],
-                'deskripsi'   => $validated['deskripsi'],
-                'harga'       => $validated['harga'],
-                'kategori_id' => $validated['kategori_id'],
-                'status'      => 'tersedia',
-                'area_id'     => Auth::user()->area_id,
+                'user_id'         => Auth::id(),
+                'nama_barang'     => $validated['nama_barang'],
+                'deskripsi'       => $validated['deskripsi'],
+                'harga'           => $validated['harga'],
+                'kategori_id'     => $validated['kategori_id'],
+                'kondisi'         => $validated['kondisi'],
+                'status'          => 'tersedia',
+                'area_id'         => Auth::user()->area_id,
+                'latitude'        => $validated['latitude'] ?? null,
+                'longitude'       => $validated['longitude'] ?? null,
+                'approval_status' => 'pending',
             ]);
 
             foreach ($request->file('fotos') as $index => $foto) {
@@ -120,7 +138,7 @@ class BarangController extends Controller
             DB::commit();
 
             return redirect()->route('listing.index')
-                ->with('success', 'Barang berhasil diposting!');
+                ->with('success', 'Barang berhasil diposting dan menunggu persetujuan admin.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withInput()
@@ -152,15 +170,20 @@ class BarangController extends Controller
             'deskripsi'   => ['nullable', 'string', 'max:1000'],
             'harga'       => ['required', 'numeric', 'min:1000', 'max:99999999'],
             'kategori_id' => ['required', 'exists:kategoris,id'],
-            'fotos'       => ['nullable', 'array', 'max:4'],
+            'kondisi'     => ['required', 'in:like-new,good,fair'],
+            'latitude'    => ['nullable', 'numeric', 'between:-90,90'],
+            'longitude'   => ['nullable', 'numeric', 'between:-180,180'],
+            'fotos'       => ['nullable', 'array', 'max:5'],
             'fotos.*'     => ['image', 'mimes:jpeg,jpg,png,webp', 'max:2048'],
         ], [
             'nama_barang.required' => 'Nama barang wajib diisi.',
             'harga.required'       => 'Harga wajib diisi.',
             'harga.min'            => 'Harga minimal Rp 1.000.',
             'kategori_id.required' => 'Pilih kategori barang.',
-            'fotos.max'            => 'Maksimal 4 foto barang.',
-            'fotos.*.image'        => 'File harus berupa gambar.',
+            'kondisi.required'     => 'Pilih kondisi barang.',
+            'kondisi.in'           => 'Kondisi barang tidak valid.',
+            'fotos.max'            => 'Maksimal 5 foto barang.',
+            'fotos.*.image'        => 'Berkas harus berupa gambar.',
             'fotos.*.mimes'        => 'Format gambar: JPEG, JPG, PNG, atau WebP.',
             'fotos.*.max'          => 'Ukuran foto maksimal 2MB.',
         ]);
@@ -169,10 +192,16 @@ class BarangController extends Controller
 
         try {
             $barang->update([
-                'nama_barang' => $validated['nama_barang'],
-                'deskripsi'   => $validated['deskripsi'],
-                'harga'       => $validated['harga'],
-                'kategori_id' => $validated['kategori_id'],
+                'nama_barang'     => $validated['nama_barang'],
+                'deskripsi'       => $validated['deskripsi'],
+                'harga'           => $validated['harga'],
+                'kategori_id'     => $validated['kategori_id'],
+                'kondisi'         => $validated['kondisi'],
+                'latitude'        => $validated['latitude'] ?? null,
+                'longitude'       => $validated['longitude'] ?? null,
+                'approval_status' => 'pending',
+                'rejected_reason' => null,
+                'reviewed_at'     => null,
             ]);
 
             if ($request->hasFile('fotos')) {
@@ -195,7 +224,7 @@ class BarangController extends Controller
             DB::commit();
 
             return redirect()->route('listing.index')
-                ->with('success', 'Barang berhasil diperbarui!');
+                ->with('success', 'Barang berhasil diperbarui dan menunggu persetujuan ulang admin.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withInput()
@@ -231,8 +260,6 @@ class BarangController extends Controller
 
         $barang->update(['status' => $validated['status']]);
 
-        $statusLabel = ucfirst($validated['status']);
-
-        return back()->with('success', "Status barang diubah menjadi {$statusLabel}.");
+        return back()->with('success', "Status barang diubah menjadi {$barang->status_label}.");
     }
 }

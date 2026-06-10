@@ -111,9 +111,27 @@ class BarangSeeder extends Seeder
             ],
         ];
 
-        foreach ($barangs as $data) {
+        // Titik kecamatan di Malang untuk demo peta (per area_id)
+        $coords = [
+            1 => [-7.93890, 112.60970], // Lowokwaru
+            2 => [-7.98190, 112.62650], // Klojen
+            3 => [-7.94300, 112.65200], // Blimbing
+            4 => [-7.99300, 112.60800], // Sukun
+            5 => [-7.99900, 112.66600], // Kedungkandang
+        ];
+
+        $kondisiOptions = ['like-new', 'good', 'fair'];
+
+        foreach ($barangs as $index => $data) {
+            [$lat, $lng] = $coords[$data['area_id']] ?? [-7.96660, 112.63260];
+
             Barang::create(array_merge($data, [
-                'status' => 'tersedia',
+                'status'          => 'tersedia',
+                'kondisi'         => $kondisiOptions[$index % 3],
+                'latitude'        => $lat,
+                'longitude'       => $lng,
+                'approval_status' => 'approved',
+                'reviewed_at'     => now(),
             ]));
         }
     }

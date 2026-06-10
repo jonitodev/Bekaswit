@@ -35,11 +35,16 @@ class AdminBarangController extends Controller
             $query->where('status', $request->input('status'));
         }
 
-        $barangs    = $query->latest()->paginate(15)->appends($request->query());
-        $kategoris  = Kategori::orderBy('nama_kategori')->get();
-        $areas      = Area::orderBy('nama_kecamatan')->get();
+        if ($request->filled('approval') && in_array($request->input('approval'), ['pending', 'approved', 'rejected'])) {
+            $query->where('approval_status', $request->input('approval'));
+        }
 
-        return view('admin.barang.index', compact('barangs', 'kategoris', 'areas'));
+        $barangs      = $query->latest()->paginate(15)->appends($request->query());
+        $kategoris    = Kategori::orderBy('nama_kategori')->get();
+        $areas        = Area::orderBy('nama_kecamatan')->get();
+        $pendingCount = Barang::where('approval_status', 'pending')->count();
+
+        return view('admin.barang.index', compact('barangs', 'kategoris', 'areas', 'pendingCount'));
     }
 
     public function show(Barang $barang)
@@ -47,6 +52,34 @@ class AdminBarangController extends Controller
         $barang->load(['user.area', 'kategori', 'area', 'fotoBarangs']);
 
         return view('admin.barang.show', compact('barang'));
+    }
+
+    public function approve(Barang $barang)
+    {
+        $barang->update([
+            'approval_status' => 'approved',
+            'rejected_reason' => null,
+            'reviewed_at'     => now(),
+        ]);
+
+        return back()->with('success', "Barang '{$barang->nama_barang}' berhasil disetujui.");
+    }
+
+    public function reject(Request $request, Barang $barang)
+    {
+        $request->validate([
+            'rejected_reason' => ['required', 'string', 'max:255'],
+        ], [
+            'rejected_reason.required' => 'Alasan penolakan wajib diisi.',
+        ]);
+
+        $barang->update([
+            'approval_status' => 'rejected',
+            'rejected_reason' => $request->input('rejected_reason'),
+            'reviewed_at'     => now(),
+        ]);
+
+        return back()->with('success', "Barang '{$barang->nama_barang}' ditolak.");
     }
 
     public function destroy(Barang $barang)

@@ -20,9 +20,14 @@ class AdminDashboardController extends Controller
             'total_barang'           => Barang::count(),
             'total_barang_tersedia'  => Barang::where('status', 'tersedia')->count(),
             'total_barang_terjual'   => Barang::where('status', 'terjual')->count(),
+            'total_barang_pending'   => Barang::where('approval_status', 'pending')->count(),
             'total_kategori'         => Kategori::count(),
             'total_area'             => Area::count(),
         ];
+
+        $pendingBarangs = Barang::with(['user', 'kategori'])
+            ->where('approval_status', 'pending')
+            ->latest()->take(5)->get();
 
         $latestBarangs = Barang::with(['user', 'kategori'])
             ->latest()->take(5)->get();
@@ -40,6 +45,7 @@ class AdminDashboardController extends Controller
 
         return view('admin.dashboard', compact(
             'stats',
+            'pendingBarangs',
             'latestBarangs',
             'latestUsers',
             'barangPerKategori',

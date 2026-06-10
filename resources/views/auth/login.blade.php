@@ -32,10 +32,10 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
+                            <label for="password" class="form-label">Kata Sandi</label>
                             <input type="password" name="password" id="password"
                                    class="form-control @error('password') is-invalid @enderror"
-                                   placeholder="Masukkan password" required>
+                                   placeholder="Masukkan kata sandi" required>
                             @error('password')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

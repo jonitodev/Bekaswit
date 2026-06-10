@@ -109,7 +109,7 @@
                                         <td><span class="badge bg-primary">{{ $barang->kategori->nama_kategori }}</span></td>
                                         <td>
                                             <span class="badge badge-status bg-{{ $barang->status === 'tersedia' ? 'success' : ($barang->status === 'booking' ? 'warning' : 'secondary') }}">
-                                                {{ ucfirst($barang->status) }}
+                                                {{ $barang->status_label }}
                                             </span>
                                         </td>
                                         <td class="text-muted small">{{ $barang->created_at->format('d/m/Y') }}</td>
